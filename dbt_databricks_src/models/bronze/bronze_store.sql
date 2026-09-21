@@ -1,0 +1,4 @@
+Select
+* 
+from
+{{ source('source', 'dim_store') }}

@@ -1,0 +1,44 @@
+version: 2
+
+models:
+  - name: bronze_date  #  Must match the filename of a model -- including case sensitivity.
+    config:
+      materialized: view
+      schema: bronze
+
+  - name: bronze_product
+    config:
+      materialized: view
+
+  - name: bronze_store  
+    config:
+      materialized: view
+    columns:
+      - name: store_sk
+        description: "Primary key for the store table"
+        data_tests:
+          - not_null
+          - unique
+      - name : store_name
+        description: "Name of the store"
+        data_tests:
+          - accepted_values:
+              arguments: 
+                values: ['MegaMart Manhattan','MegaMart Brooklyn','MegaMart Austin','MegaMart San Jose','MegaMart Toronto']
+              config:
+                severity: warn 
+
+  - name: bronze_sales
+    config:
+      materialized: view
+    columns:
+      - name: sales_id
+        description: "Primary key for the sales table"
+        data_tests:
+          - not_null
+          - unique
+      - name: gross_amount
+        description: "Gross amount of the sale"
+        data_tests:
+          - not_null
+          - generic_non_negative
